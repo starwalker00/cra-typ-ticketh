@@ -12,6 +12,21 @@ const defaultProps: ConnectButtonProps = {
   onClick: () => console.log("Default function")
 }
 
+const SHoverLayer = styled.div`
+  transition: all 0.15s ease-in-out;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(255, 255, 255, 0.1);
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+`;
+
 const SConnectButton = styled.button`
   transition: all 0.15s ease-in-out;
   position: relative;
@@ -40,6 +55,19 @@ const SConnectButton = styled.button`
     opacity: 0.7;
     box-shadow: 0 4px 6px 0 rgba(50, 50, 93, 0.11),
       0 1px 3px 0 rgba(0, 0, 0, 0.08), inset 0 0 1px 0 rgba(0, 0, 0, 0.06);
+  }
+  @media (hover: hover) {
+    &:hover {
+      transform: ${({ disabled }) => (!disabled ? "translateY(-1px)" : "none")};
+      box-shadow: ${({ disabled }) =>
+    !disabled
+      ? `0 7px 14px 0 rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08), inset 0 0 1px 0 rgba(0, 0, 0, 0.06)`
+      : `0 4px 6px 0 rgba(50, 50, 93, 0.11), 0 1px 3px 0 rgba(0, 0, 0, 0.08), inset 0 0 1px 0 rgba(0, 0, 0, 0.06)`};
+    }
+    &:hover ${SHoverLayer} {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 `;
 const ConnectButtonContent = styled.h1`
