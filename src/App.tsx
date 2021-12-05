@@ -47,7 +47,8 @@ function App() {
     // subscriptions
     provider.on("chainChanged", (chainId: number) => {
       // convert chainId received in hexadecimal to a decimal number
-      console.log(parseInt(chainId.toString(), 16));
+      chainId = parseInt(chainId.toString(), 16)
+      console.log(chainId)
       setchainId(chainId);
     });
   }
