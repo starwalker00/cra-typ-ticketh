@@ -2,8 +2,9 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ConnectButton from './components/ConnectButton';
-// import Test from './components/Test';
-import Web3 from "web3";
+import Test from './components/Test';
+// import Web3 from "web3";
+import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 
 const providerOptions = {
@@ -23,7 +24,34 @@ const web3Modal = new Web3Modal({
   providerOptions // required
 });
 
+// interface IApp {
+//   chainId?: number;
+// };
+
+// const INITIAL_STATE: IApp = {
+//   chainId: undefined,
+// };
+
 function App() {
+  const [chainId, setchainId] = React.useState(0);
+
+  async function onConnect() {
+    console.log("function onConnect()")
+    const provider = await web3Modal.connect();
+    const ethersProvider = new ethers.providers.Web3Provider(provider);
+    console.log(`provider.isConnected() : ${provider.isConnected()}`)
+    console.log(`ethersProvider.getNetwork() : ${JSON.stringify(await ethersProvider.getNetwork())}`)
+    let networkStatus = await ethersProvider.getNetwork();
+    let chainId: number = networkStatus.chainId;
+    setchainId(chainId);
+    // subscriptions
+    provider.on("chainChanged", (chainId: number) => {
+      // convert chainId received in hexadecimal to a decimal number
+      console.log(parseInt(chainId.toString(), 16));
+      setchainId(chainId);
+    });
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -39,9 +67,9 @@ function App() {
         >
           Learn React
         </a>
-        {/* <p>
-          <Test message="rr" />
-        </p> */}
+        <p>
+          <Test message={chainId ? chainId.toString() : "undefined"} />
+        </p>
         <p>
           <ConnectButton
             message="Connect Wallet"
@@ -51,12 +79,6 @@ function App() {
       </header>
     </div>
   );
-}
-
-async function onConnect() {
-  console.log("function onConnect()")
-  const provider = await web3Modal.connect();
-  console.log(`provider.isConnected() : ${provider.isConnected()}`)
 }
 
 export default App;
