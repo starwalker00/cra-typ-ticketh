@@ -2,6 +2,7 @@
 
 - https://react-typescript-cheatsheet.netlify.app
 - https://github.com/Web3Modal/web3modal
+- https://web3modal.com/
 
 # Getting Started with Create React App
 
